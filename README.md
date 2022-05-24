@@ -2,10 +2,9 @@
 Simple Greetings gRPC application to demonstrate Unary server / client 
 
 
-## Biuldning all
+## Biulding all
 ```shell
 ❯ make all
-#protoc -Iproto --go_opt=module=proto --go_out=. --go-grpc_opt=module=proto --go-grpc_out=. proto/*.proto
 protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/*.proto
 go build -o bin/server ./server
 go build -o bin/client ./client
