@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package gRPCHellow; 
+
+option go_package = "gRPCHellow/proto";
+
+message GreetingsRequest {
+    string fname = 1; 
+}
+
+message GreetingsResponse {
+    string answer = 1; 
+}
+
+service GreetingsService {
+    rpc Greetings(GreetingsRequest) returns (GreetingsResponse);
+}; 
