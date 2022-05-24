@@ -44,20 +44,20 @@ all: $(project) ## Generate Pbs and build
 
 hellow: proto/
 
-$(project):
+$(project): ## build project
 	@${CHECK_DIR_CMD}
 	#protoc -I${PROTO_DIR} --go_opt=module=${PROTO_DIR} --go_out=. --go-grpc_opt=module=${PROTO_DIR} --go-grpc_out=. ${PROTO_DIR}/*.proto
 	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/*.proto
 	go build -o ${BIN_DIR}/${SERVER_BIN} ./${SERVER_DIR}
 	go build -o ${BIN_DIR}/${CLIENT_BIN} ./${CLIENT_DIR}
 
-test: all
+test: all ## test all
 	go test ./...
 
-clean: clean_pb_hellow
+clean: clean_pb ## clean all 
 	rm -vrf ${BIN_DIR}
 
-clean_pb_hellow: ## Clean generated files for greet
+clean_pb: ## Clean generated files for greet
 	rm -fv ${PROTO_DIR}/*.pb.go
 
 rebuild: clean all ## Rebuild the whole project
