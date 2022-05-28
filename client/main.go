@@ -23,4 +23,5 @@ func main() {
 	Greetings(c)
 	ManyGreetings(c)
 	LongBackGretings(c)
+	GretingsEveryone(c)
 }
