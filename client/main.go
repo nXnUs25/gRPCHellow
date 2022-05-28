@@ -22,4 +22,5 @@ func main() {
 	c := pb.NewGreetingsServiceClient(conn)
 	Greetings(c)
 	ManyGreetings(c)
+	LongBackGretings(c)
 }
