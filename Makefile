@@ -35,8 +35,8 @@ else
 endif
 
 .DEFAULT_GOAL := help
-.PHONY: hellow help
-project := hellow
+.PHONY: hellow help ssl
+project := ssl hellow
 
 all: $(project) ## Generate Pbs and build
 
@@ -56,11 +56,15 @@ test: all ## test all
 
 clean: clean_pb ## clean all 
 	rm -vrf ${BIN_DIR}
+	rm -rfv ssl/*.crt ssl/*.key ssl/*.pem
 
 clean_pb: ## Clean generated files for greet
 	rm -fv ${PROTO_DIR}/*.pb.go
 
-rebuild: clean all ## Rebuild the whole project
+rebuild: clean all ssl ## Rebuild the whole project
+
+ssl: ## make ssl certs
+	cd $@ ; ./ssl.sh ; cd ..
 
 about: ## Display info related to the build
 	@echo "OS: ${OS}"
