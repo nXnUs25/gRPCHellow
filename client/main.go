@@ -30,7 +30,7 @@ func main() {
 		creds := grpc.WithTransportCredentials(insecure.NewCredentials())
 		opts = append(opts, creds)
 	}
-
+	opts = append(opts, grpc.WithChainUnaryInterceptor(LogInterceptor(), AddHeaderInterceptor()))
 	conn, err := grpc.Dial(addr, opts...)
 
 	if err != nil {

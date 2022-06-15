@@ -36,24 +36,26 @@ func main() {
 		}
 		opts = append(opts, grpc.Creds(creds))
 	}
-
+	opts = append(opts, grpc.ChainUnaryInterceptor(LogInterceptor(), CheckHeaderInterceptor()))
 	s := grpc.NewServer(opts...)
 	defer s.Stop()
-
-	pb.RegisterGreetingsServiceServer(s, &GreetingsServer{})
-	if err := s.Serve(listen); err != nil {
-		log.Fatalf("Failed to serve on %s - %v", addr, err)
-	}
 
 	sChan := make(chan os.Signal, 1)
 	done := make(chan bool, 1)
 	signal.Notify(sChan, os.Interrupt, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 
 	go func() {
-		<-sChan
+		sig := <-sChan
+		log.Printf("Got signal [%v]", sig)
+		log.Println("Stopping gRPCHellow server...")
+		s.GracefulStop()
 		done <- true
 	}()
+
+	pb.RegisterGreetingsServiceServer(s, &GreetingsServer{})
+	if err := s.Serve(listen); err != nil {
+		log.Fatalf("Failed to serve on %s - %v", addr, err)
+	}
 	<-done
-	log.Println("Sopping GRPC Server.")
-	s.GracefulStop()
+	log.Println("Stopped GRPC Server.")
 }
